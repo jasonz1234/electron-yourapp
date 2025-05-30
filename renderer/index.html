@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link href="./styles.css" rel="stylesheet">
+    <title>YourApp</title>
+</head>
+
+<body>
+    <div class="titlebar">
+        <div id="menuStuff">
+            <img src="./icon.png" id="icon">
+        </div>
+        <b>Titlebar</b>
+    </div>
+
+    <div id="user-viewbox">
+        <h1>Hello World!</h1>
+        <p>Current theme source: <strong id="theme-source">System</strong></p>
+        <p>nav-usr-agt: <b id="nav-info"></b></p>
+
+        <button id="toggle-dark-mode">Toggle Dark Mode</button>
+
+        <button id="check-updates-btn">Check for Updates</button>
+
+        <a href="https://google.cat" target="_blank" rel="noopener noreferrer">Google (may break app)</a>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+
+</html>
