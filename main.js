@@ -3,11 +3,15 @@ const path = require('node:path');
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 
+
+//Log stuff
 log.transports.file.level = 'info';
 autoUpdater.logger = log;
+log.info("----Started Logging----");
+log.info("Started at: "+new Date());
 
+//window 
 let win;
-
 function createWindow() {
   win = new BrowserWindow({
     width: 800,
@@ -38,27 +42,36 @@ function createWindow() {
   });
 }
 
+//some extras
 app.commandLine.appendSwitch("enable-features", "OverlayScrollbar");
 
+//theme handler
 ipcMain.handle('dark-mode:toggle', () => {
   nativeTheme.themeSource = nativeTheme.shouldUseDarkColors ? 'light' : 'dark';
   return nativeTheme.shouldUseDarkColors;
 });
 
+//Auto updater restart stuff
 ipcMain.on('restart_app', () => {
+  log.info("AutoUpdater: quiting and now installing");
   autoUpdater.quitAndInstall();
 });
 
+//Autoupdater checking for updates
 ipcMain.handle('check-for-updates', () => {
+  log.info("AutoUpdater: Checking for updates");
   autoUpdater.checkForUpdates();
 });
 
-
+//autoupdater update is avaible block
 autoUpdater.on('update-available', () => {
+  log.info("AutoUpdater: Sending update available to win")
   if (win) win.webContents.send('update_available');
 });
 
+//Auto updater the "restart to update" block
 autoUpdater.on('update-downloaded', () => {
+  log.info("AutoUpdater: Send update downloaded and ask to restart or not")
   if (win) win.webContents.send('update_downloaded');
 });
 
