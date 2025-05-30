@@ -1,0 +1,75 @@
+{
+  "name": "electron-lite-app",
+  "version": "1.0.0-alpha",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win"
+  },
+  "build": {
+    "asar": true,
+    "appId": "com.jasonz1234.yourapp",
+    "productName": "YourApp",
+    "copyright": "©jasonz1234 2025",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "locales/en-US.pak",
+      "locales/zh-??.pak",
+      "locales/ja.pak",
+      "locales/kn.pak",
+      "!**/*.map",
+      "!**/test/**",
+      "!**/docs/**",
+      "!build/**",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "extraMetadata": {
+      "dependencies": {}
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "jasonz1234",
+        "repo": "electron-yourapp"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": true,
+      "allowElevation": false,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "YourApp",
+      "include": "build/installer.nsh",
+      "multiLanguageInstaller": true,
+      "artifactName": "${productName}-${version}-setup.${ext}"
+    }
+  },
+  "keywords": [],
+  "author": "jasonz1234",
+  "license": "GPL-3.0-only",
+  "description": "",
+  "devDependencies": {
+    "electron": "^36.2.1",
+    "electron-builder": "^26.0.12"
+  },
+  "dependencies": {
+    "electron-log": "^5.4.0",
+    "electron-updater": "^6.6.2",
+    "fs-extra": "^11.3.0"
+  }
+}
