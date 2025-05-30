@@ -1,10 +1,10 @@
 {
   "name": "electron-lite-app",
-  "version": "1.0.0-alpha",
+  "version": "0.0.2-alpha",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --win"
+    "build": "electron-builder"
   },
   "build": {
     "asar": true,
@@ -57,6 +57,52 @@
       "include": "build/installer.nsh",
       "multiLanguageInstaller": true,
       "artifactName": "${productName}-${version}-setup.${ext}"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "category": "Utility",
+      "maintainer": "jasonz1234 150748837+jasonz1234@users.noreply.github.com",
+      "icon": "build/icon.png",
+      "artifactName": "${productName}-${version}-setup.${ext}",
+      "executableName": "your-app"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.utilities",
+      "artifactName": "${productName}-${version}-setup.${ext}",
+      "icon": "build/icon.icns",
+      "executableName": "YourApp"
+    },
+    "dmg": {
+      "background": "build/dmg-background.png",
+      "icon": "build/icon.icns",
+      "iconSize": 100,
+      "window": {
+        "width": 540,
+        "height": 380
+      },
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
     }
   },
   "keywords": [],
