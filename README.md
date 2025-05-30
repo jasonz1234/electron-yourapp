@@ -1,5 +1,4 @@
-[Alt text](build/icon.png "YourApp Logo")
-<h1>YourApp</h1>
+<h1><img src="build/icon.png" alt="Screenshot" width="32" height="32"/> YourApp</h1>
 <p>This is my first app that I have tried using the electron-updater feel free to clone or fork this repo</p>
 <p>If you want to run this:<br>
 <code>npm run start</code>
