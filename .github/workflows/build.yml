@@ -4,9 +4,12 @@ on: [push]
 
 jobs:
   build:
-    runs-on: macos-latest
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     env:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }} 
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -20,3 +23,18 @@ jobs:
 
       - name: Build with Electron Builder
         run: npm run build
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          PUBLISH_FOR_PULL_REQUEST: false
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }}-build-output
+          path: |
+            dist/**/*.dmg
+            dist/**/*.exe
+            dist/**/*.AppImage
+            dist/**/*.deb
+            dist/**/*latest.yml
+            dist/**/*.blockmap
