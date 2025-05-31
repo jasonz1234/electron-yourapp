@@ -1,5 +1,4 @@
 const { contextBridge, nativeTheme, ipcRenderer } = require('electron/renderer');
-const log = require('electron-log');
 
 //theme handler
 contextBridge.exposeInMainWorld('darkMode', {
@@ -13,13 +12,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onUpdateAvailable: (callback) => ipcRenderer.on('update_available', callback),
   onUpdateDownloaded: (callback) => ipcRenderer.on('update_downloaded', callback),
   sendRestart: () => ipcRenderer.send('restart_app'),
-});
-
-//logging stuff
-contextBridge.exposeInMainWorld('log', {
-  info: (...args) => log.info(...args),
-  warn: (...args) => log.warn(...args),
-  error: (...args) => log.error(...args),
 });
 
 
