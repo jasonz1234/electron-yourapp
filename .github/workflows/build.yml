@@ -27,7 +27,7 @@ jobs:
         run: npm run build
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@3e65d23b7164e5f176d6812a46eafede0e5732a7
+        uses: actions/upload-artifact@v2
         with:
           name: yourapp-${{ matrix.os }}
           path: |
