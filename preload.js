@@ -11,6 +11,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
 });
 
+contextBridge.exposeInMainWorld('mac', {
+  yes: () => ipcRenderer.invoke('mac'),
+});
 
 //theme handler 2.0 idk which is used
 contextBridge.exposeInMainWorld('darkMode', {

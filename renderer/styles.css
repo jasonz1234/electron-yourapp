@@ -36,6 +36,8 @@ body {
 
 #user-viewbox {
   overflow-y: auto;
+  text-align: center;
+  margin: 16px;
 }
 
 @media (prefers-color-scheme: dark) {

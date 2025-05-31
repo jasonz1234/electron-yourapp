@@ -41,6 +41,10 @@ function createWindow() {
   });
 }
 
+ipcMain.handle('mac', async () => {
+  return process.platform === 'darwin';
+});
+
 // Unified dialog handler for error/info from renderer
 ipcMain.handle('show-dialog', (event, type, options = {}) => {
   let dialogOptions = {
