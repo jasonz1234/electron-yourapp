@@ -137,7 +137,7 @@ ipcMain.on('restart_app', () => {
   autoUpdater.quitAndInstall();
 });
 
-// Check for updates (can be triggered from renderer)
+// Check for updates for main.js
 ipcMain.handle('check-for-updates', () => {
   log.info("AutoUpdater: Checking for updates");
   autoUpdater.checkForUpdates();
