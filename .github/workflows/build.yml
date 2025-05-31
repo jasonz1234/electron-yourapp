@@ -5,6 +5,8 @@ on: [push]
 jobs:
   build:
     runs-on: macos-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }} 
     steps:
       - uses: actions/checkout@v4
 
@@ -18,5 +20,3 @@ jobs:
 
       - name: Build with Electron Builder
         run: npm run build
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
