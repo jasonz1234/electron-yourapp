@@ -56,21 +56,11 @@
       "shortcutName": "YourApp",
       "include": "build/installer.nsh",
       "multiLanguageInstaller": true,
-      "artifactName": "${productName}-${version}-setup.${ext}"
+      "artifactName": "${productName}-${version}-setup.${ext}",
+      "license": "LICENSE"
     },
     "linux": {
-      "target": [
-        {
-          "target": [
-            "AppImage",
-            "deb"
-          ],
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        }
-      ],
+      "target": ["AppImage", "deb"],
       "category": "Utility",
       "maintainer": "jasonz1234 150748837+jasonz1234@users.noreply.github.com",
       "icon": "build/icon.png",
