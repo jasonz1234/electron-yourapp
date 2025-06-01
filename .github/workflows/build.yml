@@ -1,6 +1,9 @@
-name: Build Electron App
+name: Build and Release Electron App
 
-on: [push]
+on:
+  push:
+    tags:
+      - 'v*'  # triggers on tags starting with 'v'
 
 jobs:
   build:
@@ -10,7 +13,7 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
 
     env:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
@@ -26,8 +29,8 @@ jobs:
       - name: Build Electron App
         run: npm run build
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
         with:
           name: yourapp-${{ matrix.os }}
           path: |
@@ -37,3 +40,27 @@ jobs:
             dist/*.exe
             dist/*.blockmap
             dist/*.yaml
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts from all OS builds
+        uses: actions/download-artifact@v3
+        with:
+          path: ./release-artifacts
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./release-artifacts/**
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
