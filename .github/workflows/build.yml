@@ -38,8 +38,23 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install wine (Linux only)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y wine64 wine32
+
       - name: Build Electron app
-        run: npm run build
+        run: |
+          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+            npm run build-l
+          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+            npm run build-m
+          else
+            npm run build -w
+          fi
+        shell: bash
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -56,16 +71,20 @@ jobs:
     if: github.event_name == 'push' || github.event_name == 'pull_request'
 
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
+      - name: Download artifacts for Windows
+        uses: actions/download-artifact@v4
         with:
           name: app-build-windows-latest
           path: ./dist/win
-      - uses: actions/download-artifact@v3
+
+      - name: Download artifacts for Linux
+        uses: actions/download-artifact@v4
         with:
           name: app-build-ubuntu-latest
           path: ./dist/linux
-      - uses: actions/download-artifact@v3
+
+      - name: Download artifacts for macOS
+        uses: actions/download-artifact@v4
         with:
           name: app-build-macos-latest
           path: ./dist/mac
