@@ -28,8 +28,7 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       devTools: true,
-      spellcheck: false,
-      safeDialogs: true
+      nodeIntegration: false
     }
   });
 
@@ -82,7 +81,6 @@ ipcMain.handle('show-dialog', (event, type, options = {}) => {
 });
 
 // Handle autoUpdater events with dialogs inside main process
-
 autoUpdater.on('update-available', async () => {
   log.info("AutoUpdater: Update available");
   if (!win) return;
@@ -145,6 +143,14 @@ ipcMain.on('restart_app', () => {
 ipcMain.handle('check-for-updates', () => {
   log.info("AutoUpdater: Checking for updates");
   autoUpdater.checkForUpdates();
+  autoUpdater.on('update-not-available', () => {
+  if (win) win.webContents.send('update_not_available');
+});
+});
+
+// Respond to version request
+ipcMain.handle('get-app-version', () => {
+  return "YourApp Version: "+app.getVersion();
 });
 
 // Standard Electron app lifecycle

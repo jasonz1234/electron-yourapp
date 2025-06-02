@@ -1,10 +1,13 @@
 {
   "name": "yourapp",
+  "productName": "YourApp",
   "version": "0.0.4-alpha",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder"
+    "build": "electron-builder -w",
+    "build-l": "electron-builder -l",
+    "build-m": "electron-builder -m"
   },
   "build": {
     "asar": true,
@@ -60,7 +63,10 @@
       "license": "LICENSE"
     },
     "linux": {
-      "target": ["AppImage", "deb"],
+      "target": [
+        "AppImage",
+        "deb"
+      ],
       "category": "Utility",
       "maintainer": "jasonz1234 150748837+jasonz1234@users.noreply.github.com",
       "icon": "build/icon.png",

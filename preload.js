@@ -1,21 +1,27 @@
 const { contextBridge, nativeTheme, ipcRenderer } = require('electron/renderer');
 
-//theme handler
+// app infomation
+contextBridge.exposeInMainWorld('appInfo', {
+  getVersion: () => ipcRenderer.invoke('get-app-version')
+});
+
+// theme handler
 contextBridge.exposeInMainWorld('darkMode', {
   toggle: () => ipcRenderer.invoke('dark-mode:toggle'),
   system: () => ipcRenderer.invoke('dark-mode:system')
 })
 
-//Auto update stuff
+// Auto update stuff
 contextBridge.exposeInMainWorld('electronAPI', {
   checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
+  onUpdateNotAvailable: (callback) => ipcRenderer.on('update_not_available', callback),
 });
 
 contextBridge.exposeInMainWorld('mac', {
   yes: () => ipcRenderer.invoke('mac'),
 });
 
-//theme handler 2.0 idk which is used
+// theme handler 2.0 idk which is used
 contextBridge.exposeInMainWorld('darkMode', {
   toggle: () => {
     const isDark = nativeTheme.shouldUseDarkColors;

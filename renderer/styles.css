@@ -17,12 +17,10 @@ body {
   align-items: center;
   app-region: drag;
 }
-
 .titlebar #menuStuff {
   app-region: no-drag;
   top: 0;
 }
-
 .titlebar #menuStuff img {
   left: 4px;
   -webkit-user-drag: none;
@@ -37,7 +35,45 @@ body {
 #user-viewbox {
   overflow-y: auto;
   text-align: center;
+  madrgin: 16px;
+}
+
+#settings-container {
+  display: contents;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  display: none;
+}
+#settings-container #settings-background {
+  background-color: #00000065;
+  filter: blur(.5);
+  z-index: 99;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 38px;
+  margin: 0;
+}
+#settings-container #settings-box {
   margin: 16px;
+  border-radius: 5px;
+  z-index: 100;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px;
+  width: 400px;
+  height: 300px;
+  border-radius: 5px;
+  background-color: #333;
+}
+#settings-container #settings-box #settings-box-exit{
+  text-decoration: none;
+  text-align: right;
+  right: 16px;
+  position: fixed;
 }
 
 @media (prefers-color-scheme: dark) {
