@@ -40,7 +40,7 @@ jobs:
         run: npm ci
 
       - name: Install wine (Linux only)
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == '/ubuntu-latest'
         run: |
           sudo dpkg --add-architecture i386
           sudo apt-get update
@@ -53,7 +53,7 @@ jobs:
           elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
             npm run build-m
           else
-            npm run build -w
+            npm run build
           fi
         shell: bash
         env:
