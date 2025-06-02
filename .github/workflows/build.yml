@@ -3,11 +3,10 @@ name: Build Electron App
 on:
   push:
     tags:
-      - 'v*'        # e.g. v1.0.0 tags
+      - 'v*' # Triggers only on version tags like v1.0.0
 
 jobs:
   build:
-    environment: macOS
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -18,7 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
@@ -34,12 +33,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      #- name: Install wine (Linux only)
-        #if: matrix.os == 'ubuntu-latest'
-        #run: |
-          #sudo dpkg --add-architecture i386
-          #sudo apt-get update
-          #sudo apt-get install -y wine64 wine32
+      # Optional Wine setup, if you need to build Windows apps from Linux
+      # - name: Install wine (Linux only)
+      #   if: matrix.os == 'ubuntu-latest'
+      #   run: |
+      #     sudo dpkg --add-architecture i386
+      #     sudo apt-get update
+      #     sudo apt-get install -y wine64 wine32
 
       - name: Build Electron app
         run: |
@@ -66,7 +66,6 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event_name == 'pull_request'
 
     steps:
       - name: Download artifacts for Windows
@@ -87,7 +86,7 @@ jobs:
           name: app-build-macos-latest
           path: ./dist/mac
 
-      - name: Create Release
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           name: Release ${{ github.ref_name }}
@@ -95,15 +94,16 @@ jobs:
           draft: true
           prerelease: false
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
+
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            dist/win/*.exe
-            dist/linux/*.AppImage
-            dist/mac/*.dmg
+            files: |
+              dist/win/*.exe
+              dist/linux/*.AppImage
+              dist/linux/*.deb
+              dist/mac/*.dmg
+              dist/**/latest*.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
