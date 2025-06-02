@@ -12,6 +12,7 @@ on:
 
 jobs:
   build:
+    environment: macOS
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
