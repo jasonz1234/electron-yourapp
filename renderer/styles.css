@@ -86,6 +86,10 @@ body {
     background: #414141;
     color: #fff
   }
+
+  #settings-container #settings-box {
+    background: #333;
+  }
 }
 
 @media (prefers-color-scheme: light) {
@@ -97,5 +101,9 @@ body {
   .titlebar {
     background: #fff;
     color: #000
+  }
+
+  #settings-container #settings-box {
+    background-color: #fff;
   }
 }
