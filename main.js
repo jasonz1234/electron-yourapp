@@ -3,6 +3,9 @@ const path = require('node:path');
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 
+const devbuild = false;
+const allowDevTools = false;
+
 // Logging setup
 log.transports.file.level = 'info';
 autoUpdater.logger = log;
@@ -33,11 +36,28 @@ function createWindow() {
   });
 
   win.loadFile('renderer/index.html');
-  win.webContents.openDevTools();
 
   win.webContents.on('did-finish-load', () => {
     autoUpdater.checkForUpdatesAndNotify();
   });
+  if (devbuild != false) {
+    win.webContents.on('devtools-opened', () => {
+      win.webContents.executeJavaScript(`
+    console.log(
+      "%c⚠️ STOP! %c\\nDon't paste code here unless you know exactly what you're doing.\\nIt can compromise your app or data!",
+      "background: red; width: 100%; position: relative; color: white; font-size: 40px; font-weight: bold; padding: 20px 50px; border-radius: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.6);",
+      "font-weight: bold; font-size: 18px; padding: 10px 0 0 10px;"
+    );
+  `);
+    });
+    const allowDevTools = true;
+    win.webContents.openDevTools();
+  }
+  win.webContents.on('devtools-opened', () => {
+  if (allowDevTools!=true) {
+    win.webContents.closeDevTools();
+  }
+});
 }
 
 ipcMain.handle('mac', async () => {
@@ -144,13 +164,13 @@ ipcMain.handle('check-for-updates', () => {
   log.info("AutoUpdater: Checking for updates");
   autoUpdater.checkForUpdates();
   autoUpdater.on('update-not-available', () => {
-  if (win) win.webContents.send('update_not_available');
-});
+    if (win) win.webContents.send('update_not_available');
+  });
 });
 
 // Respond to version request
 ipcMain.handle('get-app-version', () => {
-  return "YourApp Version: "+app.getVersion();
+  return "YourApp Version: " + app.getVersion();
 });
 
 // Standard Electron app lifecycle
