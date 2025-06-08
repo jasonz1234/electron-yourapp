@@ -77,7 +77,7 @@
       "target": [
         "dmg"
       ],
-      "arch": ["universal"]
+      "arch": ["universal"],
       "category": "public.app-category.utilities",
       "artifactName": "${productName}-${version}-setup.${ext}",
       "icon": "build/icon.icns",
