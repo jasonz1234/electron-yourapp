@@ -7,7 +7,7 @@
     "start": "electron .",
     "build": "electron-builder -w",
     "build-l": "electron-builder -l",
-    "build-m": "electron-builder -m"
+    "build-m": "electron-builder -m --universal"
   },
   "build": {
     "asar": true,
@@ -77,7 +77,6 @@
       "target": [
         "dmg"
       ],
-      "arch": ["universal"],
       "category": "public.app-category.utilities",
       "artifactName": "${productName}-${version}-setup.${ext}",
       "icon": "build/icon.icns",
