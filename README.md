@@ -6,7 +6,7 @@
 or build:
 <code>npm run build</code></p>
 <h2>Screenshots</h2>
-![alt text](images/image1.png)
-![alt text](images/images2.png)
+<img src="images/image1.png">
+<img src="images/image2.png">
 <h2>❤️Credits</h2>
 <p>Thank you to electron for the dark theme example</p>
