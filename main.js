@@ -3,6 +3,7 @@ const path = require('node:path');
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 
+// dev stuff
 const devbuild = false;
 const allowDevTools = true;
 
@@ -11,6 +12,9 @@ log.transports.file.level = 'info';
 autoUpdater.logger = log;
 log.info("----Started Logging----");
 log.info("Started at: " + new Date());
+log.info('App version: ' + app.getVersion);
+log.info("Devbuild?....." + devbuild);
+log.info("allowdevtools." + allowDevTools);
 
 // Window reference
 let win;
@@ -35,7 +39,7 @@ function createWindow() {
       nodeIntegration: false
     }
   });
-
+  //load app page
   win.loadFile('renderer/index.html');
 
   win.webContents.on('did-finish-load', () => {
@@ -43,23 +47,20 @@ function createWindow() {
       log.info('AutoUpdater')
       autoUpdater.checkForUpdatesAndNotify();
     } else {
-      console.log('AutoUpdater skipped: not packaged.');
+      console.log('AutoUpdater: I skipped not packaged.');
     }
 
   });
-  if (devbuild != false) {
-    win.webContents.on('devtools-opened', () => {
-      win.webContents.executeJavaScript(`
-    console.log(
-      "%c⚠️ STOP! %c\\nDon't paste code here unless you know exactly what you're doing.\\nIt can compromise your app or data!",
+  win.webContents.on('devtools-opened', () => {
+    win.webContents.executeJavaScript(`console.log(
+      "%c⚠️ STOP! %c\\nDon't paste code here unless you know exactly what you're doing.\\nIt can compromise your computer or worse",
       "background: red; width: 100%; position: relative; color: white; font-size: 40px; font-weight: bold; padding: 20px 50px; border-radius: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.6);",
       "font-weight: bold; font-size: 18px; padding: 10px 0 0 10px;"
-    );
-  `);
-    });
-    const allowDevTools = true;
+    );`);
+  });
+  if (devbuild != false) {
     win.webContents.openDevTools();
-  }
+  };
   win.webContents.on('devtools-opened', () => {
     if (allowDevTools != true) {
       win.webContents.closeDevTools();
@@ -67,10 +68,10 @@ function createWindow() {
   });
 }
 
+// macos checker
 ipcMain.handle('mac', async () => {
   return process.platform === 'darwin';
 });
-
 // Unified dialog handler for error/info from renderer
 ipcMain.handle('show-dialog', (event, type, options = {}) => {
   let dialogOptions = {
@@ -81,7 +82,6 @@ ipcMain.handle('show-dialog', (event, type, options = {}) => {
     message: '',
     detail: ''
   };
-
   switch (type) {
     case 'error':
       dialogOptions = {
@@ -103,7 +103,6 @@ ipcMain.handle('show-dialog', (event, type, options = {}) => {
       };
       break;
   }
-
   return dialog.showMessageBox(win, dialogOptions);
 });
 
@@ -121,12 +120,13 @@ autoUpdater.on('update-available', async () => {
     message: 'A new update is available.',
     detail: 'Would you like to download and install it now?'
   });
-
   if (result.response === 0) {
     autoUpdater.downloadUpdate();
+    log.info('Autoupdater: now downloading update');
   } else {
     // User deferred update
     win.webContents.send('update-deferred');
+    log.info('Autoupdater: Update ignored')
   }
 });
 
@@ -146,6 +146,7 @@ autoUpdater.on('update-downloaded', async () => {
 
   if (result.response === 0) {
     autoUpdater.quitAndInstall();
+    log.info('Autoupdater: now restarting to update')
   } else {
     win.webContents.send('restart-later');
   }
@@ -183,6 +184,19 @@ ipcMain.handle('check-for-updates', () => {
 // Respond to version request
 ipcMain.handle('get-app-version', () => {
   return "YourApp Version: " + app.getVersion();
+});
+
+// Devtools controller thing
+ipcMain.handle('devtools', () => {
+  if (!allowDevTools) {
+    allowDevTools = true;
+  } else allowDevTools = false;
+  return allowDevTools;
+});
+
+// return if devbuild
+ipcMain.handle('devbuild', () => {
+  return devbuild;
 });
 
 // Standard Electron app lifecycle

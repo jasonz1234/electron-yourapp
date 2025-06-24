@@ -1,6 +1,11 @@
-// updater stuff self-expantory
+// updater button
 document.getElementById('check-updates-btn').addEventListener('click', () => {
   window.electronAPI.checkForUpdates();
+});
+
+//devmode stuff turns on devtools for cef
+document.getElementById('devmode').addEventListener('click', () => {
+  window.electronAPI.devmode();
 });
 
 // Settings box stuff
@@ -18,12 +23,12 @@ window.appInfo.getVersion().then(appinfo => {
 });
 // app updates
 window.electronAPI.onUpdateNotAvailable(() => {
-  document.getElementById('update-status').innerText = 'No updates right now';
+  document.getElementById('update-status').innerText = 'No updates right now!!';
 });
 
 // theme btn
 document.getElementById('toggle-dark-mode').addEventListener('click', async () => {
-  const isDark = await window.darkMode.toggle();
+  const isDark = await window.electronAPI.themeToggle();
   document.getElementById('theme-source').innerText = isDark ? 'Dark' : 'Light';
 });
 
@@ -34,5 +39,5 @@ document.getElementById('nav-info').innerText = navigator.userAgent;
 document.getElementById('icon').addEventListener('click', () => {
   location.reload();
 });
-
-if (window.mac.yes === true) { document.getElementById('icon').style.right = "4px"; document.getElementById('icon').style.left = "auto"; }
+// macos icon thing
+if (window.electronAPI.mac === true) { document.getElementById('icon').style.right = "4px"; document.getElementById('icon').style.left = "auto"; }

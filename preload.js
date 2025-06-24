@@ -7,18 +7,21 @@ contextBridge.exposeInMainWorld('appInfo', {
 
 // theme handler
 contextBridge.exposeInMainWorld('darkMode', {
-  toggle: () => ipcRenderer.invoke('dark-mode:toggle'),
-  system: () => ipcRenderer.invoke('dark-mode:system')
+
 })
 
-// Auto update stuff
+// exposing apis
 contextBridge.exposeInMainWorld('electronAPI', {
+  // Update handles
   checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
   onUpdateNotAvailable: (callback) => ipcRenderer.on('update_not_available', callback),
-});
-
-contextBridge.exposeInMainWorld('mac', {
-  yes: () => ipcRenderer.invoke('mac'),
+  // mac comfirmation
+  mac: () => ipcRenderer.invoke('mac'),
+  // dev handling
+  devtools: () => ipcRenderer.invoke('devtools'),
+  devbuild: () =>ipcRenderer.invoke('devbuild'),
+  // theme handling
+  themeToggle: () => ipcRenderer.invoke('dark-mode:toggle'),
 });
 
 // theme handler 2.0 idk which is used
