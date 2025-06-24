@@ -10,3 +10,4 @@ or build:
 <img src="images/image2.png">
 <h2>❤️Credits</h2>
 <p>Thank you to electron for the dark theme example</p>
+<p>Thank You to the Font Awersome team for Font Awersome!!</p>
