@@ -7,17 +7,17 @@
   script-src 'self' 'unsafe-inline' *.42web.io;
   style-src 'self' 'unsafe-inline' *.42web.io;
 ">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <link href="./styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="./fa/css/all.min.css">
     <title>YourApp</title>
 </head>
 
 <body>
     <div class="titlebar">
         <div id="menuStuff">
-            <img src="./icon.png" id="icon">
+            <img src="./icon.png" id="icon" alt="icon">
         </div>
         <b>Titlebar</b>
     </div>
@@ -25,7 +25,12 @@
     <!--This is the user main view box used to fixed the ramdom scroll bar over the title-->
     <div id="user-viewbox">
         <div id="act-bar">
-            <button id="Settings">⚙️Settings</button>
+            </br>
+            <b>Tools:</b>
+            <button id="Settings">
+                <i class="fa-solid fa-gear"></i>
+                Settings
+            </button>
         </div>
         <h1>Hello World!</h1>
         <p>Current theme source: <strong id="theme-source">System</strong></p>
@@ -34,20 +39,22 @@
         <a href="https://google.cat" target="_blank" rel="noopener noreferrer">Google (may break app)</a>
 
         <div id="settings-container">
-        <div id="settings-background"></div>
-        <div id="settings-box">
-            <a href="#" id="settings-box-exit">❌</a>
-            <h1>⚙️Settings</h1>
-            <hr>
-            <button id="toggle-dark-mode">🖌️Toggle Dark Mode</button>
-            <button id="check-updates-btn">⬆️Check for Updates</button><br>
-            <span id="update-status"></span>
-            <span id="version"></span>
+            <div id="settings-background"></div>
+            <div id="settings-box">
+                <a href="#" id="settings-box-exit"><i class="fa-solid fa-xmark"></i></a>
+                <h1><i class="fa-solid fa-gear"></i> Settings</h1>
+                <hr>
+                <button id="toggle-dark-mode"><i class="fa-solid fa-paintbrush"></i> Toggle Dark Mode</button>
+                <button id="check-updates-btn"><i class="fa-solid fa-up-long"></i> Check for Updates</button><br>
+                <span id="update-status"></span>
+                <br>
+                <span id="version"></span>
+            </div>
         </div>
-    </div>
     </div>
 
     <script src="renderer.js"></script>
+    <script src="./fa/js/all.min.js"></script>
 </body>
 
 </html>

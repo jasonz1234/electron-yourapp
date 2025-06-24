@@ -34,4 +34,5 @@ document.getElementById('nav-info').innerText = navigator.userAgent;
 document.getElementById('icon').addEventListener('click', () => {
   location.reload();
 });
+
 if (window.mac.yes === true) { document.getElementById('icon').style.right = "4px"; document.getElementById('icon').style.left = "auto"; }

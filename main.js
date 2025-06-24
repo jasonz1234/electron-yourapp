@@ -1,10 +1,10 @@
-const { app, BrowserWindow, ipcMain, nativeTheme, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, nativeTheme, isPackaged } = require('electron');
 const path = require('node:path');
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 
 const devbuild = false;
-const allowDevTools = false;
+const allowDevTools = true;
 
 // Logging setup
 log.transports.file.level = 'info';
@@ -18,8 +18,9 @@ function createWindow() {
   win = new BrowserWindow({
     width: 800,
     height: 600,
+    frame: true,
     icon: './renderer/icon.png',
-    titleBarStyle: 'hidden',
+    titleBarStyle: "hidden",
     ...(process.platform !== 'darwin' ? { titleBarOverlay: true } : {}),
     titleBarOverlay: {
       color: '#00000000',
@@ -38,7 +39,13 @@ function createWindow() {
   win.loadFile('renderer/index.html');
 
   win.webContents.on('did-finish-load', () => {
-    autoUpdater.checkForUpdatesAndNotify();
+    if (app.isPackaged) {
+      log.info('AutoUpdater')
+      autoUpdater.checkForUpdatesAndNotify();
+    } else {
+      console.log('AutoUpdater skipped: not packaged.');
+    }
+
   });
   if (devbuild != false) {
     win.webContents.on('devtools-opened', () => {
@@ -54,10 +61,10 @@ function createWindow() {
     win.webContents.openDevTools();
   }
   win.webContents.on('devtools-opened', () => {
-  if (allowDevTools!=true) {
-    win.webContents.closeDevTools();
-  }
-});
+    if (allowDevTools != true) {
+      win.webContents.closeDevTools();
+    }
+  });
 }
 
 ipcMain.handle('mac', async () => {
@@ -161,8 +168,13 @@ ipcMain.on('restart_app', () => {
 
 // Check for updates for main.js
 ipcMain.handle('check-for-updates', () => {
-  log.info("AutoUpdater: Checking for updates");
-  autoUpdater.checkForUpdates();
+  if (app.isPackaged) {
+    log.info("AutoUpdater: Checking for updates");
+    autoUpdater.checkForUpdates();
+    autoUpdater.checkForUpdatesAndNotify();
+  } else {
+    console.log('AutoUpdater skipped: not packaged.');
+  }
   autoUpdater.on('update-not-available', () => {
     if (win) win.webContents.send('update_not_available');
   });
