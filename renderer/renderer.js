@@ -1,3 +1,5 @@
+const icon = document.getElementById('icon');
+
 // updater button
 document.getElementById('check-updates-btn').addEventListener('click', () => {
   window.electronAPI.checkForUpdates();
@@ -36,8 +38,8 @@ document.getElementById('toggle-dark-mode').addEventListener('click', async () =
 document.getElementById('nav-info').innerText = navigator.userAgent;
 
 // icon stuff
-document.getElementById('icon').addEventListener('click', () => {
+icon.addEventListener('click', () => {
   location.reload();
 });
 // macos icon thing
-if (window.electronAPI.mac === true) { document.getElementById('icon').style.right = "4px"; document.getElementById('icon').style.left = "auto"; }
+if (window.electronAPI.mac === false) { icon.style.right = "4px"; icon.style.left = "auto"; icon.style.textAlign = 'right'; }

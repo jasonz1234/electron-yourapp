@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, nativeTheme, isPackaged } = require('electron');
+const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron');
 const path = require('node:path');
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
@@ -15,7 +15,7 @@ log.info("Started at: " + new Date());
 log.info('App version: ' + app.getVersion);
 log.info("Devbuild?....." + devbuild);
 log.info("allowdevtools." + allowDevTools);
-log.info("isPackaged...." + app.isPackaged)
+log.info("isPackaged...." + app.isPackaged);
 
 // Window reference
 let win;
@@ -24,6 +24,7 @@ function createWindow() {
     width: 800,
     height: 600,
     frame: true,
+    roundedCorners: true,
     icon: './renderer/icon.png',
     titleBarStyle: "hidden",
     ...(process.platform !== 'darwin' ? { titleBarOverlay: true } : {}),
@@ -37,7 +38,12 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       devTools: true,
-      nodeIntegration: false
+      nodeIntegration: false,
+      accessibleTitle: "Your App",
+      safeDialogs: true,
+      scrollBounce: true,
+      spellcheck: false,
+      javascript: true
     }
   });
   //load app page
@@ -48,10 +54,10 @@ function createWindow() {
     autoUpdater.checkForUpdatesAndNotify();
   });
   win.webContents.on('devtools-opened', () => {
-    win.webContents.executeJavaScript(`console.log(
-      "%c⚠️ STOP! %c\\nDon't paste code here unless you know exactly what you're doing.\\nIt can compromise your computer or worse",
+    win.webContents.executeJavaScript(`console.warn(
+      "Computer or App Safety\\n%c⚠️ STOP!!!! %c\\nWARNING: Do not paste code here unless you know exactly what you're doing.\\nIt can compromise your computer or worse",
       "background: red; width: 100%; position: relative; color: white; font-size: 40px; font-weight: bold; padding: 20px 50px; border-radius: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.6);",
-      "font-weight: bold; font-size: 18px; padding: 10px 0 0 10px;"
+      "font-weight: bolder; font-size: 20px; padding: 10px 0 0 10px;"
     );`);
   });
   if (devbuild != false) {
