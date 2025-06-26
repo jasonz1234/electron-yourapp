@@ -1,24 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <!--Metadata-->
     <meta http-equiv="Content-Security-Policy" content="
   default-src 'self' *.42web.io;
   script-src 'self' 'unsafe-inline' *.42web.io;
   style-src 'self' 'unsafe-inline' *.42web.io;
 ">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <link href="./styles.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <!--Styles-->
+    <link rel="stylesheet" href="./styles.css">
     <link rel="stylesheet" href="./fa/css/all.min.css">
     <title>YourApp</title>
 </head>
 
 <body>
+    <!--Titlebar don't mess with this-->
     <div class="titlebar">
         <div id="menuStuff">
+            <!--The title icon-->
             <img src="./icon.png" id="icon" alt="icon">
         </div>
+        <!--title text-->
         <b>Titlebar</b>
     </div>
 
@@ -27,26 +32,35 @@
         <div id="act-bar">
             </br>
             <b>Tools:</b>
+            <!--Settings btn-->
             <button id="Settings">
                 <i class="fa-solid fa-gear"></i>
                 Settings
             </button>
         </div>
+        <!--Main Content-->
         <h1>Hello World!</h1>
-        <p>Current theme source: <strong id="theme-source">System</strong></p>
+        <p>Current theme: <strong id="theme-source">System</strong></p>
         <p>Navagation User Agent String: <b id="nav-info"></b></p>
 
-        <a href="https://google.cat" target="_blank" rel="noopener noreferrer">Google (may break app)</a>
+        <a href="https://google.cat" target="_blank" rel="noopener noreferrer" title="Google don't click will break app">Google (WILL break app)</a>
 
+        <!--This is the settings box-->
         <div id="settings-container">
+            <!--background don't mind this-->
             <div id="settings-background"></div>
+            <!--This is the main contents of the the actual box-->
             <div id="settings-box">
-                <a href="#" id="settings-box-exit"><i class="fa-solid fa-xmark"></i></a>
+                <!--Exit btn-->
+                <a href="#exit" id="settings-box-exit" title="exit"><i class="fa-solid fa-xmark"></i></a>
+                <!--Title-->
                 <h1><i class="fa-solid fa-gear"></i> Settings</h1>
                 <hr>
+                <!--Btns-->
                 <button id="toggle-dark-mode"><i class="fa-solid fa-paintbrush"></i> Toggle Dark Mode</button>
                 <button id="check-updates-btn"><i class="fa-solid fa-up-long"></i> Check for Updates</button>
                 <button id="devmode"><i class="fa-solid fa-screwdriver-wrench"></i> Turn On devtools</button><br>
+                <!--text stuff like version-->
                 <span id="update-status"></span>
                 <br>
                 <span id="version"></span>
@@ -54,6 +68,7 @@
         </div>
     </div>
 
+    <!--DON'T REMOVE-->
     <script src="renderer.js"></script>
     <script src="./fa/js/all.min.js"></script>
 </body>

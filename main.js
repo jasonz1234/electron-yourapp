@@ -7,7 +7,7 @@ const log = require('electron-log');
 const devbuild = false;
 const allowDevTools = false;
 
-// Logging setup
+// Logging setup and extra debug info
 log.transports.file.level = 'info';
 autoUpdater.logger = log;
 log.info("----Started Logging----");
@@ -17,7 +17,7 @@ log.info("Devbuild?....." + devbuild);
 log.info("allowdevtools." + allowDevTools);
 log.info("isPackaged...." + app.isPackaged);
 
-// Window reference
+// Window making stuff
 let win;
 function createWindow() {
   win = new BrowserWindow({
@@ -50,10 +50,12 @@ function createWindow() {
   //load app page
   win.loadFile('renderer/index.html');
 
+  //Auto updater checking for updates
   win.webContents.on('did-finish-load', () => {
     log.info("Autoupdater: Checking for Updates");
     autoUpdater.checkForUpdatesAndNotify();
   });
+  //Open devtools msg
   win.webContents.on('devtools-opened', () => {
     win.webContents.executeJavaScript(`console.warn(
       "Computer or App Safety\\n%c⚠️ STOP!!!! %c\\nWARNING: Do not paste code here unless you know exactly what you're doing.\\nIt can compromise your computer or worse",
@@ -61,9 +63,11 @@ function createWindow() {
       "font-weight: bolder; font-size: 20px; padding: 10px 0 0 10px;"
     );`);
   });
+  //auto opening if devbuild to make life easier
   if (devbuild != false) {
     win.webContents.openDevTools();
   };
+  //force close devtools
   win.webContents.on('devtools-opened', () => {
     if (allowDevTools != true) {
       win.webContents.closeDevTools();
@@ -133,6 +137,7 @@ autoUpdater.on('update-available', async () => {
   }
 });
 
+//Update downloaded duh
 autoUpdater.on('update-downloaded', async () => {
   log.info("AutoUpdater: Update downloaded");
   if (!win) return;
@@ -155,7 +160,7 @@ autoUpdater.on('update-downloaded', async () => {
   }
 });
 
-// Extra CLI flag
+// Extra CLI flag hope have good scroll bars
 app.commandLine.appendSwitch("enable-features", "OverlayScrollbar");
 
 // Theme toggle handler
@@ -213,6 +218,7 @@ app.whenReady().then(() => {
   });
 });
 
+//macos thing again
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
