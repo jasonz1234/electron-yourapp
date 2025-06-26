@@ -5,7 +5,7 @@ const log = require('electron-log');
 
 // dev stuff
 const devbuild = false;
-const allowDevTools = true;
+const allowDevTools = false;
 
 // Logging setup
 log.transports.file.level = 'info';
@@ -24,6 +24,7 @@ function createWindow() {
     width: 800,
     height: 600,
     frame: true,
+    title: 'YourApp',
     roundedCorners: true,
     icon: './renderer/icon.png',
     titleBarStyle: "hidden",
