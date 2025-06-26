@@ -15,6 +15,7 @@ log.info("Started at: " + new Date());
 log.info('App version: ' + app.getVersion);
 log.info("Devbuild?....." + devbuild);
 log.info("allowdevtools." + allowDevTools);
+log.info("isPackaged...." + app.isPackaged)
 
 // Window reference
 let win;
@@ -43,13 +44,8 @@ function createWindow() {
   win.loadFile('renderer/index.html');
 
   win.webContents.on('did-finish-load', () => {
-    if (app.isPackaged) {
-      log.info('AutoUpdater')
-      autoUpdater.checkForUpdatesAndNotify();
-    } else {
-      console.log('AutoUpdater: I skipped not packaged.');
-    }
-
+    log.info("Autoupdater: Checking for Updates");
+    autoUpdater.checkForUpdatesAndNotify();
   });
   win.webContents.on('devtools-opened', () => {
     win.webContents.executeJavaScript(`console.log(
