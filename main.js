@@ -3,7 +3,7 @@ const path = require('node:path');
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 
-// dev stuff
+// dev stuff whatever it is
 const devbuild = false;
 const allowDevTools = false;
 
