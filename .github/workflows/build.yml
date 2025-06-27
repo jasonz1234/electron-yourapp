@@ -3,18 +3,26 @@ name: Build Electron App For All Platforms
 on:
   push:
     tags:
-      - '*'  # Trigger only on all tags
+      - '*'  # Trigger on any tag push (e.g. v1.0.0)
 
 jobs:
   build:
     name: Build Electron App
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest] # The oses
-        arch: [x64, arm64]
-        exclude:
+        include:
+          - os: windows-latest
+            arch: x64
+            script: build
+          - os: windows-latest
+            arch: arm64
+            script: build-w-arm
           - os: ubuntu-latest
-            arch: arm64  # Skip ARM64 Linux if not supported
+            arch: x64
+            script: build-l
+          - os: macos-latest
+            arch: universal
+            script: build-m
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
@@ -39,24 +47,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Electron app for ${{ matrix.os }} on ${{ matrix.arch }}
-        run: |
-          echo "Building for platform: ${{ matrix.os }}, arch: ${{ matrix.arch }}"
-          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
-            npm run build-l -- --arch=${{ matrix.arch }}
-          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
-            npm run build-m -- --arch=${{ matrix.arch }}
-          else
-            npm run build -- --arch=${{ matrix.arch }}
-          fi
-        shell: bash
+      - name: Build Electron app (${{ matrix.script }})
+        run: npm run ${{ matrix.script }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: app-build-${{ matrix.os }}-${{ matrix.arch }}
+          name: app-${{ matrix.os }}-${{ matrix.arch }}
           path: |
             dist/*.exe
             dist/*.AppImage
@@ -69,8 +68,9 @@ jobs:
     name: Create GitHub Release
     needs: build
     runs-on: ubuntu-latest
+
     steps:
-      - name: Download all artifacts
+      - name: Download all build artifacts
         uses: actions/download-artifact@v4
         with:
           path: ./dist
@@ -81,13 +81,12 @@ jobs:
           name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
           draft: true
-          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload release assets
+      - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/**/*.{exe,dmg,AppImage,deb,yml,zip}
+          files: ./dist/**/*.{exe,dmg,AppImage,deb,yml,zip}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
