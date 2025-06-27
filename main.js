@@ -16,6 +16,7 @@ log.info('App version: ' + app.getVersion);
 log.info("Devbuild?....." + devbuild);
 log.info("allowdevtools." + allowDevTools);
 log.info("isPackaged...." + app.isPackaged);
+log.info('----Ended Debugging Info----');
 
 // Window making stuff
 let win;
