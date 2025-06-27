@@ -6,6 +6,7 @@
   "scripts": {
     "start": "electron .",
     "build": "electron-builder -w",
+    "build-w-arm": "electron-builder -w --arm64",
     "build-l": "electron-builder -l",
     "build-m": "electron-builder -m --universal"
   },

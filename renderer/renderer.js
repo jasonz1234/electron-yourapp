@@ -21,21 +21,21 @@ document.getElementById('Settings').addEventListener('click', () => {
 // app info
 window.appInfo.getVersion().then(appinfo => {
   console.log("App version:", appinfo);
-  document.getElementById('version').innerText = appinfo;
+  document.getElementById('version').innerHTML = '<i class="fa-solid fa-tablet-button"></i> ' + appinfo;
 });
 // app updates
 window.electronAPI.onUpdateNotAvailable(() => {
-  document.getElementById('update-status').innerText = 'No updates right now!!';
+  document.getElementById('update-status').innerHTML = '<i class="fa-solid fa-ban"></i> No updates right now!!';
 });
 
 // theme btn
 document.getElementById('toggle-dark-mode').addEventListener('click', async () => {
   const isDark = await window.electronAPI.themeToggle();
-  document.getElementById('theme-source').innerText = isDark ? 'Dark' : 'Light';
+  document.getElementById('theme-source').innerHTML = isDark ? '<i class="fa-solid fa-moon"></i> Dark' : '<i class="fa-solid fa-sun"></i> Light';
 });
 
 // nav info
-document.getElementById('nav-info').innerText = navigator.userAgent;
+document.getElementById('nav-info').innerHTML = navigator.userAgent;
 
 // icon stuff
 icon.addEventListener('click', () => {
